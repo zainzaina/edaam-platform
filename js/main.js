@@ -137,6 +137,7 @@ const storeItems = [
         price: '9 دينار',
         image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=1200&q=80'
     }
+
 ];
 
 const sellers = [
@@ -175,6 +176,7 @@ const sellers = [
         bio: 'أحب الأعمال الورقية والمنتجات المكتبية بتفاصيل يدوية مميزة.',
         avatar: 'https://randomuser.me/api/portraits/women/22.jpg'
     }
+    
 ];
 
 window.IdamData = {
@@ -872,3 +874,53 @@ function animateOnScroll() {
 
 // Initialize the app when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', init);
+
+/* Custom cursor + click stars (purely visual, non-destructive) */
+(function(){
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    cursor.innerHTML = '<div class="cursor-ring"></div><div class="cursor-dot"></div>';
+    document.body.appendChild(cursor);
+
+    let lastMove = 0;
+    document.addEventListener('mousemove', (e) => {
+        lastMove = Date.now();
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    }, { passive: true });
+
+    function createStars(x,y){
+        const colors = ['#FFD166','#06D6A0','#118AB2','#EF476F','#7c3aed'];
+        for(let i=0;i<8;i++){
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.left = x + 'px';
+            s.style.top = y + 'px';
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 30 + Math.random() * 70;
+            const tx = Math.cos(angle) * dist + 'px';
+            const ty = Math.sin(angle) * dist + 'px';
+            s.style.setProperty('--tx', tx);
+            s.style.setProperty('--ty', ty);
+            const color = colors[Math.floor(Math.random()*colors.length)];
+            s.style.background = `radial-gradient(circle at 40% 30%, #fff, ${color})`;
+            document.body.appendChild(s);
+            s.addEventListener('animationend', () => s.remove());
+        }
+    }
+
+    document.addEventListener('mousedown', (e) => {
+        cursor.classList.add('click');
+        createStars(e.clientX, e.clientY);
+    });
+    document.addEventListener('mouseup', () => cursor.classList.remove('click'));
+
+    // Hide cursor element when leaving window
+    document.addEventListener('mouseleave', () => cursor.style.opacity = '0.0');
+    document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+
+    // Add neon class to key headings/buttons for effect
+    requestAnimationFrame(() => {
+        document.querySelectorAll('.hero-title, h1, h2, .btn, .nav-links a').forEach(el => el.classList.add('neon-text'));
+    });
+})();

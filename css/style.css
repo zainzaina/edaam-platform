@@ -1,6 +1,10 @@
 /* Base Styles & Variables */
 :root {
     --primary: #5B57C7;
+    --neon-1: #7c3aed;
+    --neon-2: #34d1c8;
+    --neon-3: #ffd166;
+    --cursor-size: 18px;
     --teal: #39C1C8;
     --mint: #B7D98A;
     --dark: #2D3748;
@@ -9,6 +13,101 @@
     --shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
+
+/* Neon / Cursor / Click particles */
+body {
+    cursor: none;
+}
+
+.custom-cursor{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: calc(var(--cursor-size) * 4);
+    height: calc(var(--cursor-size) * 4);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    transition: transform 120ms linear;
+    mix-blend-mode: normal;
+}
+.custom-cursor .cursor-dot{
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.1));
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(124,58,237,0.8), 0 0 18px rgba(52,209,200,0.18);
+    transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%; top: 50%;
+}
+.custom-cursor .cursor-ring{
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: calc(var(--cursor-size) * 2);
+    height: calc(var(--cursor-size) * 2);
+    border-radius: 50%;
+    border: 2px solid rgba(124,58,237,0.85);
+    box-shadow: 0 0 12px rgba(124,58,237,0.35), 0 0 28px rgba(52,209,200,0.12);
+    opacity: 0.9;
+    transition: transform 160ms ease, opacity 160ms ease;
+}
+.custom-cursor.click .cursor-ring{
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.6;
+}
+
+/* Star particle */
+.star{
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2500;
+    transform: translate(-50%, -50%);
+    animation: starFly 700ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+@keyframes starFly{
+    0%{ opacity:1; transform: translate(-50%, -50%) scale(1); }
+    100%{ opacity:0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.2); }
+}
+
+/* Neon text */
+.neon-text, .hero-title, h1, h2 {
+    color: var(--dark);
+    text-shadow: 0 0 6px rgba(124,58,237,0.12), 0 0 20px rgba(52,209,200,0.06);
+}
+.neon-text { 
+    text-shadow: 0 0 6px rgba(124,58,237,0.9), 0 0 14px rgba(52,209,200,0.6), 0 0 30px rgba(255,209,102,0.12);
+}
+
+/* Buttons neon glow */
+.btn-primary, .btn-secondary{
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.btn-primary:hover, .btn-secondary:hover{
+    box-shadow: 0 10px 40px rgba(91,87,199,0.18), 0 0 30px rgba(124,58,237,0.18);
+    transform: translateY(-4px) scale(1.02);
+}
+
+/* Improve hero logo display */
+.hero-logo{
+    width: 260px;
+    max-width: 55%;
+    display: block;
+    margin: 8px auto 0;
+}
+
+/* Emphasize icons with neon */
+.nav-links i, .step-icon i, .project-actions i, .store-card .pill i{
+    color: var(--primary);
+    text-shadow: 0 0 6px rgba(91,87,199,0.2);
+    font-size: 1.05rem;
+}
+
+/* small utility for neon badges */
+.pill { display:inline-flex; align-items:center; gap:8px; }
+
 
 * {
     margin: 0;
